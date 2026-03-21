@@ -57,7 +57,10 @@ def merge_args_with_config(args, config: dict):
     args_dict = vars(args)
 
     for key, value in config.items():
-        if key in args_dict and args_dict.get(key) is None:
+        if key == "dir" and "directory" in args_dict:
+            if args_dict.get("directory") is None:
+                setattr(args, "directory", value)
+        elif key in args_dict and args_dict.get(key) is None:
             setattr(args, key, value)
 
     return args
@@ -74,13 +77,13 @@ def main():
         help=f"配置文件路径（默认: {DEFAULT_CONFIG_FILE}）"
     )
 
-    pdf_group = parser.add_mutually_exclusive_group(required=False)
-    pdf_group.add_argument(
+    parser.add_argument(
         "--pdf", "-p",
         help="PDF 文件路径"
     )
-    pdf_group.add_argument(
+    parser.add_argument(
         "--dir", "-d",
+        dest="directory",
         help="目录路径（批量处理模式）"
     )
 
@@ -124,7 +127,7 @@ def main():
     args = merge_args_with_config(args, config)
 
     try:
-        if not args.pdf and not args.dir:
+        if not args.pdf and not args.directory:
             parser.print_help()
             sys.exit(1)
 
@@ -132,8 +135,8 @@ def main():
             print("错误: 请提供所有必需参数（image, width, height, x, y）或在配置文件中设置", file=sys.stderr)
             sys.exit(1)
 
-        if args.dir:
-            dir_path = args.dir
+        if args.directory:
+            dir_path = args.directory
             if not os.path.isdir(dir_path):
                 print(f"错误: 目录不存在: {dir_path}", file=sys.stderr)
                 sys.exit(1)
