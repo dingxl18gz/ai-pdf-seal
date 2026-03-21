@@ -57,10 +57,7 @@ def merge_args_with_config(args, config: dict):
     args_dict = vars(args)
 
     for key, value in config.items():
-        if key == "dir" and "directory" in args_dict:
-            if args_dict.get("directory") is None:
-                setattr(args, "directory", value)
-        elif key in args_dict and args_dict.get(key) is None:
+        if key in args_dict and args_dict.get(key) is None:
             setattr(args, key, value)
 
     return args
