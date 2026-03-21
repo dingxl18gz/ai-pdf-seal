@@ -2,6 +2,7 @@ import argparse
 import logging
 import os
 import sys
+from datetime import datetime
 
 import yaml
 
@@ -9,12 +10,32 @@ from src.pdf_processor import PdfSealProcessor
 
 
 DEFAULT_CONFIG_FILE = "config.yaml"
+DEFAULT_LOG_DIR = "logs"
 
-logging.basicConfig(
-    format="[%(levelname)s] %(message)s",
-    level=logging.INFO
-)
-logger = logging.getLogger(__name__)
+
+def setup_logging():
+    os.makedirs(DEFAULT_LOG_DIR, exist_ok=True)
+
+    log_filename = f"ai-pdf-seal-{datetime.now().strftime('%Y%m%d')}.log"
+    log_path = os.path.join(DEFAULT_LOG_DIR, log_filename)
+
+    file_handler = logging.FileHandler(log_path, encoding='utf-8')
+    file_handler.setLevel(logging.DEBUG)
+    file_handler.setFormatter(logging.Formatter("[%(asctime)s] [%(levelname)s] %(message)s"))
+
+    console_handler = logging.StreamHandler()
+    console_handler.setLevel(logging.INFO)
+    console_handler.setFormatter(logging.Formatter("[%(levelname)s] %(message)s"))
+
+    root_logger = logging.getLogger()
+    root_logger.setLevel(logging.DEBUG)
+    root_logger.addHandler(file_handler)
+    root_logger.addHandler(console_handler)
+
+    return logging.getLogger(__name__)
+
+
+logger = setup_logging()
 
 
 def is_already_sealed(pdf_path: str) -> bool:
