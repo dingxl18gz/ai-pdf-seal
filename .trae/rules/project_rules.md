@@ -4,9 +4,34 @@
 
 ---
 
-## 1. 运行日志规范
+## 1. 开发流程（文档先行）
 
-### 1.1 必须记录的内容
+### 1.1 必须流程
+
+**所有新功能开发必须遵循以下流程：**
+
+1. **编写 Spec 文档** - 明确需求、变更内容、影响范围
+2. **编写 Tasks 清单** - 拆解具体任务步骤
+3. **编写 Checklist 验收清单** - 定义验收标准
+4. **用户确认** - 确认规范后再开始实现
+5. **实现代码** - 按照规范实现
+6. **编写单元测试** - 确保代码质量
+7. **验证通过** - 运行测试，确保所有验收点通过
+
+### 1.2 文档命名规范
+
+```
+.trae/specs/<功能名称>/
+├── spec.md      # 功能规范文档
+├── tasks.md     # 任务清单
+└── checklist.md # 验收清单
+```
+
+---
+
+## 2. 运行日志规范
+
+### 2.1 必须记录的内容
 
 所有新功能实现必须包含以下日志：
 
@@ -17,7 +42,7 @@
 | 汇总日志 | 处理完成 | 总数、成功数、失败数 |
 | 错误日志 | 异常发生时 | 错误信息、堆栈跟踪 |
 
-### 1.2 日志输出要求
+### 2.2 日志输出要求
 
 - **同时输出到控制台和文件**
 - 控制台：INFO 级别，简化格式 `[级别] 消息`
@@ -25,7 +50,7 @@
 - 日志目录：`logs/`
 - 日志文件名：`ai-pdf-seal-YYYYMMDD.log`
 
-### 1.3 日志格式示例
+### 2.3 日志格式示例
 
 ```
 [INFO] ==================================================
@@ -47,9 +72,9 @@
 
 ---
 
-## 2. 代码规范
+## 3. 代码规范
 
-### 2.1 日志实现方式
+### 3.1 日志实现方式
 
 使用 Python 标准库 `logging`：
 
@@ -82,9 +107,57 @@ logger = setup_logging()
 
 ---
 
-## 3. Git 规范
+## 4. 单元测试规范
 
-### 3.1 必须忽略的文件
+### 4.1 测试要求
+
+- **所有核心功能必须有单元测试**
+- 测试文件放在 `tests/` 目录
+- 命名规范：`test_<模块名>.py`
+
+### 4.2 测试框架
+
+使用 Python 标准库 `unittest` 或 `pytest`
+
+### 4.3 测试用例要求
+
+| 测试类型 | 说明 |
+|----------|------|
+| 功能测试 | 验证核心业务逻辑正确 |
+| 边界测试 | 测试边界条件和异常情况 |
+| 集成测试 | 测试模块间协作 |
+
+### 4.4 示例
+
+```python
+import unittest
+from src.pdf_processor import PdfSealProcessor
+
+class TestPdfSealProcessor(unittest.TestCase):
+    def test_validate_pdf_not_exist(self):
+        with self.assertRaises(FileNotFoundError):
+            processor = PdfSealProcessor(
+                pdf_path="not_exist.pdf",
+                image_path="stamp.png",
+                width=50, height=50, x=100, y=100
+            )
+            processor.validate()
+
+    def test_validate_image_not_exist(self):
+        with self.assertRaises(FileNotFoundError):
+            processor = PdfSealProcessor(
+                pdf_path="test.pdf",
+                image_path="not_exist.png",
+                width=50, height=50, x=100, y=100
+            )
+            processor.validate()
+```
+
+---
+
+## 5. Git 规范
+
+### 5.1 必须忽略的文件
 
 ```
 # Python
@@ -98,19 +171,16 @@ output.pdf
 # 日志
 logs/
 
+# 测试输出
+tests/__pycache__/
+.pytest_cache/
+
 # IDE
 .vscode/
 .idea/
 ```
 
----
+### 5.2 提交规范
 
-## 4. 文档规范
-
-### 4.1 新功能开发流程
-
-1. 创建 Spec 文档（`.trae/specs/<feature>/spec.md`）
-2. 创建任务清单（`.trae/specs/<feature>/tasks.md`）
-3. 创建验收清单（`.trae/specs/<feature>/checklist.md`）
-4. 用户确认后开始实现
-5. 实现完成后验证所有验收点
+- 提交信息要清晰描述变更内容
+- 每次功能完成后进行提交
