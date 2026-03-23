@@ -12,9 +12,13 @@ from src.pdf_processor import PdfSealProcessor
 def get_config_path():
     if getattr(sys, 'frozen', False):
         base_dir = os.path.dirname(sys.executable)
+        external_config = os.path.join(base_dir, "config.yaml")
+        if os.path.exists(external_config):
+            return external_config
+        return os.path.join(base_dir, "config.yaml")
     else:
         base_dir = os.path.dirname(os.path.abspath(__file__))
-    return os.path.join(base_dir, "config.yaml")
+        return os.path.join(base_dir, "config.yaml")
 
 
 DEFAULT_CONFIG_FILE = get_config_path()
