@@ -97,17 +97,17 @@ class PdfSealGUI:
 
         row = 0
         ttk.Label(config_frame, text="目录选择:", style="Normal.TLabel").grid(row=row, column=0, sticky=tk.W, pady=8)
-        ttk.Entry(config_frame, textvariable=self.dir_var, width=45).grid(row=row, column=1, padx=8, pady=8, sticky=(tk.W, tk.E))
-        ttk.Button(config_frame, text="浏览", command=self.browse_directory, width=8).grid(row=row, column=2, pady=8)
+        ttk.Entry(config_frame, textvariable=self.dir_var, width=52).grid(row=row, column=1, padx=8, pady=8, sticky=(tk.W, tk.E))
+        ttk.Button(config_frame, text="浏览", command=self.browse_directory, width=6).grid(row=row, column=2, pady=8, sticky=tk.W)
 
         row += 1
         ttk.Label(config_frame, text="印章图片:", style="Normal.TLabel").grid(row=row, column=0, sticky=tk.W, pady=8)
-        ttk.Entry(config_frame, textvariable=self.image_var, width=45).grid(row=row, column=1, padx=8, pady=8, sticky=(tk.W, tk.E))
-        ttk.Button(config_frame, text="浏览", command=self.browse_image, width=8).grid(row=row, column=2, pady=8)
+        ttk.Entry(config_frame, textvariable=self.image_var, width=52).grid(row=row, column=1, padx=8, pady=8, sticky=(tk.W, tk.E))
+        ttk.Button(config_frame, text="浏览", command=self.browse_image, width=6).grid(row=row, column=2, pady=8, sticky=tk.W)
 
         row += 1
         size_frame = ttk.Frame(config_frame)
-        size_frame.grid(row=row, column=0, columnspan=3, sticky=tk.W, pady=8)
+        size_frame.grid(row=row, column=0, columnspan=3, sticky=tk.W, pady=8, padx=98)
 
         ttk.Label(size_frame, text="印章尺寸:", style="Normal.TLabel").pack(side=tk.LEFT)
         ttk.Label(size_frame, text="宽度:").pack(side=tk.LEFT, padx=(15, 5))
@@ -119,7 +119,7 @@ class PdfSealGUI:
 
         row += 1
         pos_frame = ttk.Frame(config_frame)
-        pos_frame.grid(row=row, column=0, columnspan=3, sticky=tk.W, pady=8)
+        pos_frame.grid(row=row, column=0, columnspan=3, sticky=tk.W, pady=8, padx=98)
 
         ttk.Label(pos_frame, text="印章位置:", style="Normal.TLabel").pack(side=tk.LEFT)
         ttk.Label(pos_frame, text="X坐标:").pack(side=tk.LEFT, padx=(15, 5))
