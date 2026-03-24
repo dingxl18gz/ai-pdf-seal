@@ -69,6 +69,7 @@ class PdfSealGUI:
             yaml.safe_dump(self.config, f, allow_unicode=True)
 
     def load_config_to_ui(self):
+        self._loading_config = True
         self.dir_var.set(self.config.get('directory', ''))
         self.image_var.set(self.config.get('image', ''))
         self.width_var.set(self.config.get('width', 50))
@@ -76,6 +77,7 @@ class PdfSealGUI:
         self.x_var.set(self.config.get('x', 450))
         self.y_var.set(self.config.get('y', 150))
         self.force_var.set(self.config.get('force', False))
+        self._loading_config = False
 
     def create_widgets(self):
         self.dir_var = tk.StringVar()
@@ -85,6 +87,7 @@ class PdfSealGUI:
         self.x_var = tk.IntVar(value=450)
         self.y_var = tk.IntVar(value=150)
         self.force_var = tk.BooleanVar(value=False)
+        self._loading_config = False
 
         main_frame = ttk.Frame(self.root, padding="15")
         main_frame.pack(fill=tk.BOTH, expand=True)
@@ -170,6 +173,8 @@ class PdfSealGUI:
             self.image_var.set(image_file)
 
     def on_config_change(self, *args):
+        if getattr(self, '_loading_config', False):
+            return
         self.config['directory'] = self.dir_var.get()
         self.config['image'] = self.image_var.get()
         self.config['width'] = self.width_var.get()
