@@ -20,7 +20,14 @@ This skill builds a standalone .exe file from the Python project using PyInstall
 
 ## Usage
 
-Simply invoke this skill, and it will:
+### GUI 版本（推荐）
+打包 GUI 版本，运行时无控制台窗口：
+1. Run: `pip install pyinstaller` (if needed)
+2. Run: `pyinstaller --onefile --windowed --name ai-pdf-seal --add-data "config.yaml;." main_gui.py`
+3. Output: `dist/ai-pdf-seal.exe`
+
+### 命令行版本
+打包命令行版本，保留控制台窗口：
 1. Run: `pip install pyinstaller` (if needed)
 2. Run: `pyinstaller --onefile --name ai-pdf-seal --add-data "config.yaml;." main.py`
 3. Output: `dist/ai-pdf-seal.exe`
